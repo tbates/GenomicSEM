@@ -1,6 +1,43 @@
 userGWAS <- function(covstruc=NULL, SNPs=NULL, estimation="DWLS", model="", printwarn=TRUE,
                      sub=FALSE,cores=NULL, toler=FALSE, SNPSE=FALSE, parallel=TRUE, GC="standard", MPI=FALSE,
-                     smooth_check=FALSE, TWAS=FALSE, std.lv=FALSE,fix_measurement=TRUE,Q_SNP=FALSE){
+                     smooth_check=FALSE, TWAS=FALSE, std.lv=FALSE,fix_measurement=TRUE,Q_SNP=FALSE,
+                     analytic=FALSE, batch_size=100000){
+  
+  # ── Argument cross-checks for analytic option ─────────────────────────────────
+  if (analytic && !isFALSE(sub)) {
+    stop(
+      "The 'sub' argument is not compatible with analytic=TRUE.\n",
+      "When using analytic estimation, factor-level results are returned for all\n",
+      "factors specified via '~ SNP' lines in the model. Please remove the 'sub'\n",
+      "argument and set analytic=TRUE."
+    )
+  }
+
+  if (!analytic && !missing(batch_size)) {
+    stop(
+      "The 'batch_size' argument is only used when analytic=TRUE.\n",
+      "Please either set analytic=TRUE to use the analytic estimator, or remove\n",
+      "the 'batch_size' argument to use standard iterative estimation."
+    )
+  }
+
+  # ── Model permissibility check for analytic option ────────────────────────────
+  if (analytic) {
+    .check_analytic_model(model)
+  }
+
+  # ── If analytic=TRUE, pipe to userGWASa and return ───────────────────────────
+  if (analytic) {
+    return(
+      userGWASa(
+        sumstats   = SNPs,
+        LDSCoutput = covstruc,
+        model      = model,
+        usermod    = NULL,
+        batch_size = batch_size
+      )
+    )
+  }
   
   # Set toler to machine precision to enable passing this to solve() directly
   if (!toler) toler <- .Machine$double.eps
@@ -382,4 +419,64 @@ userGWAS <- function(covstruc=NULL, SNPs=NULL, estimation="DWLS", model="", prin
     return(Results_List)
     
   }
+}
+
+# ── Internal helper: model permissibility check for analytic estimation ───────
+.check_analytic_model <- function(model) {
+
+  lines <- trimws(strsplit(model, "\n")[[1]])
+  lines <- lines[nchar(lines) > 0]
+
+  # Lines NOT involving SNP
+  nosnp_lines <- lines[!grepl("\\bSNP\\b", lines)]
+
+  # 1. Detect regression paths not involving SNP (e.g. F1 ~ F2)
+  non_snp_reg <- nosnp_lines[
+    grepl("~", nosnp_lines, fixed = TRUE) &
+    !grepl("=~", nosnp_lines, fixed = TRUE) &
+    !grepl("~~", nosnp_lines, fixed = TRUE)
+  ]
+
+  if (length(non_snp_reg) > 0) {
+    warning(
+      "The measurement model contains regression paths not involving the SNP:\n",
+      paste(" ", non_snp_reg, collapse = "\n"), "\n\n",
+      "The analytic estimator requires that the measurement model contains only ",
+      "first-order factors, factor loadings (=~), and factor covariances (~~). ",
+      "Regression paths between latent variables (e.g., F1 ~ F2) imply higher-order ",
+      "or mediation structures that are not currently supported. ",
+      "Please reparametrize your model as a first-order measurement model before ",
+      "using analytic=TRUE. See the userGWAS tutorial for guidance.",
+      call. = FALSE
+    )
+  }
+
+  # 2. Detect higher-order factors
+  loading_lines <- nosnp_lines[grepl("=~", nosnp_lines, fixed = TRUE)]
+
+  loadings_lhs <- trimws(sub("\\s*=~.*", "", loading_lines))
+
+  rhs_parts <- sub(".*=~\\s*", "", loading_lines)
+  rhs_tokens <- unlist(strsplit(rhs_parts, "\\+"))
+  rhs_tokens <- trimws(rhs_tokens)
+  rhs_tokens <- gsub("^[a-zA-Z0-9_.]+\\*", "", rhs_tokens)
+  rhs_tokens <- trimws(rhs_tokens)
+  loadings_rhs <- unique(rhs_tokens[nchar(rhs_tokens) > 0])
+
+  higher_order <- intersect(loadings_lhs, loadings_rhs)
+
+  if (length(higher_order) > 0) {
+    warning(
+      "The measurement model appears to contain higher-order factor(s): ",
+      paste(higher_order, collapse = ", "), ".\n\n",
+      "The analytic estimator requires a first-order factor structure only. ",
+      "Higher-order factors (i.e., factors that load onto other factors) are not ",
+      "currently supported. Please reparametrize your model as a first-order ",
+      "measurement model before using analytic=TRUE. ",
+      "See the userGWAS tutorial for guidance.",
+      call. = FALSE
+    )
+  }
+
+  invisible(NULL)
 }
