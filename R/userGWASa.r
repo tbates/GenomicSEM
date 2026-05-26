@@ -87,6 +87,10 @@ userGWASa <- function(sumstats, LDSCoutput, model, usermod = NULL, batch_size = 
   start_time <- Sys.time()
   cat("userGWASa started at:", format(start_time, "%Y-%m-%d %H:%M:%S"), "\n")
 
+  # Coerce to plain data.frame to ensure consistent column subsetting
+  # regardless of whether input is a data.table, tibble, or other tabular class
+  sumstats <- as.data.frame(sumstats)
+
   # ── No-SNP model ──────────────────────────────────────────────────────────────
   if (is.character(model) & is.null(usermod)) {
     model_lines  <- strsplit(model, "\n")[[1]]
