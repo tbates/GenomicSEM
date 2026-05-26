@@ -1,7 +1,7 @@
 userGWAS <- function(covstruc=NULL, SNPs=NULL, estimation="DWLS", model="", printwarn=TRUE,
                      sub=FALSE,cores=NULL, toler=FALSE, SNPSE=FALSE, parallel=TRUE, GC="standard", MPI=FALSE,
                      smooth_check=FALSE, TWAS=FALSE, std.lv=FALSE,fix_measurement=TRUE,Q_SNP=FALSE,
-                     analytic=FALSE, batch_size=100000){
+                     analytic=FALSE, batch_size=100000, usermod=NULL){
   
   # ── Argument cross-checks for analytic option ─────────────────────────────────
   if (analytic && !isFALSE(sub)) {
@@ -21,6 +21,14 @@ userGWAS <- function(covstruc=NULL, SNPs=NULL, estimation="DWLS", model="", prin
     )
   }
 
+  if (!is.null(usermod) && !analytic) {
+    stop(
+      "The 'usermod' argument is only used when analytic=TRUE.\n",
+      "Please either set analytic=TRUE to use the analytic estimator, or remove\n",
+      "the 'usermod' argument to use standard iterative estimation."
+    )
+  }
+
   # ── Model permissibility check for analytic option ────────────────────────────
   if (analytic) {
     .check_analytic_model(model)
@@ -33,7 +41,7 @@ userGWAS <- function(covstruc=NULL, SNPs=NULL, estimation="DWLS", model="", prin
         sumstats   = SNPs,
         LDSCoutput = covstruc,
         model      = model,
-        usermod    = NULL,
+        usermod    = usermod,
         batch_size = batch_size
       )
     )
