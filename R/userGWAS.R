@@ -37,7 +37,7 @@ userGWAS <- function(covstruc=NULL, SNPs=NULL, estimation="DWLS", model="", prin
   # ── If analytic=TRUE, pipe to userGWASa and return ───────────────────────────
   if (analytic) {
     return(
-      userGWASa(
+      .userGWASa(
         sumstats   = SNPs,
         LDSCoutput = covstruc,
         model      = model,
