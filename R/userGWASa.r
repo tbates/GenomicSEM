@@ -47,6 +47,7 @@
 #' vector is consistent with the implied factor model.
 #'
 #' @seealso \code{\link[GenomicSEM]{usermodel}}, \code{\link[GenomicSEM]{userGWAS}}
+#' @noRd
 #'
 #' @examples
 #' \dontrun{
@@ -69,8 +70,8 @@
 #' )
 #' }
 #'
-#' @export
-userGWASa <- function(sumstats, LDSCoutput, model, usermod = NULL, batch_size = 100000) {
+#' @keywords internal
+.userGWASa <- function(sumstats, LDSCoutput, model, usermod = NULL, batch_size = 100000) {
 
   # Helper function: V' M V
   VMV <- function(V1, M, V2) { V1 %*% M %*% V2 }
