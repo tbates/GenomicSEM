@@ -76,15 +76,6 @@
   # Helper function: V' M V
   VMV <- function(V1, M, V2) { V1 %*% M %*% V2 }
 
-  # Check required packages
-  list.of.packages <- c("data.table", "GenomicSEM", "dplyr", "stringr",
-                        "simsalapar", "gdata", "Matrix", "lavaan")
-  new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[, "Package"])]
-  if (length(new.packages)) stop("Missing package(s): ", paste0(new.packages, collapse = " and "))
-  suppressPackageStartupMessages({
-    lapply(list.of.packages, library, character.only = TRUE)
-  })
-
   start_time <- Sys.time()
   cat("userGWASa started at:", format(start_time, "%Y-%m-%d %H:%M:%S"), "\n")
 
