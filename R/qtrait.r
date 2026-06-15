@@ -672,9 +672,7 @@ my_graph <- ggplot(rGs, aes(x = .data[[x_var]], y = .data[[y_var]], size = .data
 # Add geom based on stdout value
 if (stdout == TRUE) {
   my_graph <- my_graph + 
-    geom_segment(data = betas_selected, 
-                 aes(x = 0, y = 0, xend = 1, yend = slope * 1, color = model), 
-                 inherit.aes = FALSE, linetype = "solid", size = 1) +
+    geom_segment(data = betas_selected, aes(x = 0, y = 0, xend = 1, yend = slope * 1, color = model), inherit.aes = FALSE, linetype = "solid", size = 1) +
     geom_point(aes(fill = highlight), shape = 21) + 
     geom_text(vjust = -1, size = 5)  # Add text after points
   

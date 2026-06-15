@@ -160,7 +160,7 @@ cat("\n")
         reg <- lm(a11 ~ LDsc)
         h11.ols <- c(summary(reg)$coef[1:2, 1:2] * c(N1,  M))
         h11v <- (h11.ols[2] * LDsc/M + 1/N1)^2
-        reg <- lm(a11 ~ LDsc, weight = 1/h11v)
+        reg <- lm(a11 ~ LDsc, weights = 1/h11v)
         h11.wls <- c(summary(reg)$coef[1:2, 1:2] * c(N1,  M))
         bstar1 <- crossprod(V, bhat1)
         opt <- optim(c(h11.wls[2], 1), llfun, N = N1, Nref = Nref,
@@ -330,15 +330,15 @@ cat("\n")
         h12.ols <- c(summary(reg)$coef[1:2, 1:2] * c(N, M))
       h11v <- (h11.ols[2] * LDsc/M + 1/N1)^2
       h22v <- (h22.ols[2] * LDsc/M + 1/N2)^2
-      reg <- lm(a11 ~ LDsc, weight = 1/h11v)
+      reg <- lm(a11 ~ LDsc, weights = 1/h11v)
       h11.wls <- c(summary(reg)$coef[1:2, 1:2] * c(N1, M))
-      reg <- lm(a22 ~ LDsc, weight = 1/h22v)
+      reg <- lm(a22 ~ LDsc, weights = 1/h22v)
       h22.wls <- c(summary(reg)$coef[1:2, 1:2] * c(N2,M))
       if (N0 > 0) 
         h12v <- sqrt(h11v * h22v) + (h12.ols[2] * LDsc/M + p1 * p2 * rho12/N0)^2
       if (N0 == 0) 
         h12v <- sqrt(h11v * h22v) + (h12.ols[2] * LDsc/M)^2
-      reg <- lm(a12 ~ LDsc, weight = 1/h12v)
+      reg <- lm(a12 ~ LDsc, weights = 1/h12v)
       if (N0 > 0) 
         h12.wls <- c(summary(reg)$coef[1:2, 1:2] * c((N0/p1/p2), M))
       if (N0 == 0) 

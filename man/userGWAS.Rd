@@ -5,9 +5,10 @@
 Function to obtain model estimates for a user-specified model across SNPs. 
 }
 \usage{
-userGWAS(covstruc=NULL,SNPs=NULL,estimation="DWLS",model="",printwarn=TRUE,sub=FALSE,cores=NULL,toler=FALSE,SNPSE=FALSE,
-         parallel=TRUE,GC="standard",MPI=FALSE,smooth_check=FALSE,TWAS=FALSE,std.lv=FALSE,fix_measurement=TRUE,
-         Q_SNP=FALSE,analytic=FALSE,batch_size=100000,usermod=NULL, \dots)
+userGWAS(covstruc=NULL,SNPs=NULL,estimation="DWLS",model="",printwarn=TRUE,sub=FALSE,
+	cores=NULL,toler=FALSE,SNPSE=FALSE, parallel=TRUE,GC="standard",MPI=FALSE,
+	smooth_check=FALSE,TWAS=FALSE,std.lv=FALSE,fix_measurement=TRUE,
+    Q_SNP=FALSE,analytic=FALSE,batch_size=100000,usermod=NULL, ...)
 }
 \arguments{
    \item{covstruc}{Output from Genomic SEM `ldsc` function}
@@ -30,6 +31,7 @@ userGWAS(covstruc=NULL,SNPs=NULL,estimation="DWLS",model="",printwarn=TRUE,sub=F
    \item{analytic}{Logical. If \code{TRUE}, routes to a fast analytic GLS estimator instead of the default iterative lavaan-based approach. This is substantially faster for large GWAS datasets and returns factor-specific betas, sandwich-corrected SEs, Z-statistics, p-values, and an omnibus Q statistic per SNP. The \code{sub}, \code{cores}, \code{parallel}, and \code{MPI} arguments are ignored when \code{analytic = TRUE}. Default is \code{FALSE}.}
    \item{batch_size}{Integer. Number of SNPs processed per batch when \code{analytic = TRUE}. Larger values increase memory use but reduce overhead. Default is \code{100000}.}
    \item{usermod}{Optional. A pre-fitted no-SNP model results data frame (the \code{$results} element from a \code{usermodel()} call). When supplied and \code{analytic = TRUE}, the function skips fitting the no-SNP model internally and uses these parameter estimates directly to extract factor loadings. Default is \code{NULL}.}
+   \item{...}{further arguments passed to or from other methods.}
 }
 
 \value{

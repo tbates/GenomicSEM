@@ -62,7 +62,7 @@ munge <- function(files,hm3,trait.names=NULL,N=NULL,info.filter = .9,maf.filter=
   if (!parallel) {
     .LOG("Reading summary statistics for ", paste(files,collapse=" "), ". Please note that this step usually takes a few minutes due to the size of summary statistic files.", file=log.file)
     ##note that fread is not used here due to formatting differences across summary statistic files
-    files <- lapply(files, read.table, header=T, quote="\"", fill=T, na.string=c(".", NA, "NA", ""))
+    files <- lapply(files, read.table, header=TRUE, quote="\"", fill = TRUE, na.strings = c(".", NA, "NA", ""))
     .LOG("All files loaded into R!",file=log.file)
     for(i in 1:length(files)){
       .munge_main(i, NULL, files[[i]], filenames[i], trait.names[i], N[i], ref, hm3, info.filter, maf.filter, column.names, overwrite, log.file)
@@ -79,7 +79,7 @@ munge <- function(files,hm3,trait.names=NULL,N=NULL,info.filter = .9,maf.filter=
       int <- length(filenames)
     }
     # Defaulting to PSOCK cluster as it should work on both Linux and Windows,
-    # and from my experience it's faster when not copying large ammounts of data
+    # and from my experience it's faster when not copying large amounts of data
     cl <- makeCluster(int, type="PSOCK")
     registerDoParallel(cl)
     on.exit(stopCluster(cl))

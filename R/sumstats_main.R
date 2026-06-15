@@ -3,7 +3,7 @@
   if (!is.null(file)) {
     file <- data.frame(file)
   } else{
-    file <- data.frame(read.table(filename, header = T, quote="\"",fill=T,na.string=c(".",NA,"NA","")))
+    file <- data.frame(read.table(filename, header = TRUE, quote="\"",fill=TRUE, na.strings = c(".",NA,"NA","")))
   }
   if (!is.null(utilfuncs)) {
     for (j in names(utilfuncs)) {

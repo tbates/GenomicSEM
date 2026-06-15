@@ -169,13 +169,13 @@ s_ldsc <- function(traits,sample.prev=NULL,population.prev=NULL,ld,wld,frq,trait
   .LOG("Reading in annotation files. This step may take a few minutes.", file=log.file)
   
   for(i in 1:length(annot.files)){
-    header <- suppressMessages(read.table(annot.files[i], header = TRUE, nrow = 1))
+    header <- suppressMessages(read.table(annot.files[i], header = TRUE, nrows = 1))
     if(Operating == "Darwin"){
-      annot <- suppressMessages(fread(input=paste("gzcat",annot.files[i]),skip=1,header=FALSE,showProgress=F,data.table=F))}
+      annot <- suppressMessages(fread(input=paste("gzcat",annot.files[i]), skip=1, header=FALSE, showProgress=F, data.table=FALSE))}
     if(Operating == "Windows"){
-      annot <- suppressMessages(fread(input=paste(annot.files[i]),skip=1,header=FALSE,showProgress=F,data.table=F))}
+      annot <- suppressMessages(fread(input=paste(annot.files[i]),skip=1,header=FALSE,showProgress=F,data.table=FALSE))}
     if(Operating == "Linux"){
-      annot <- suppressMessages(fread(input=paste("zcat",annot.files[i]),skip=1,header=FALSE,showProgress=F,data.table=F))
+      annot <- suppressMessages(fread(input=paste("zcat",annot.files[i]),skip=1,header=FALSE,showProgress=FALSE,data.table=FALSE))
     }
     setnames(annot, colnames(header))
     annot$CM <- NULL
@@ -183,11 +183,11 @@ s_ldsc <- function(traits,sample.prev=NULL,population.prev=NULL,ld,wld,frq,trait
       for(j in 1:length(ld2)){
         extra.annot.files <- sort(Sys.glob(paste0(ld2[j],"*annot.gz")))
         if(Operating == "Darwin"){
-          extra.annot <- suppressMessages(fread(input=paste("gzcat",extra.annot.files[i]),header=T,showProgress=F,data.table=F))}
+          extra.annot <- suppressMessages(fread(input=paste("gzcat",extra.annot.files[i]),header=TRUE,showProgress=FALSE,data.table=FALSE))}
         if(Operating == "Windows"){
-          extra.annot <- suppressMessages(fread(input=paste(extra.annot.files[i]),header=T,showProgress=F,data.table=F))}
+          extra.annot <- suppressMessages(fread(input=paste(extra.annot.files[i]),header=TRUE,showProgress=FALSE,data.table=FALSE))}
         if(Operating == "Linux"){
-          extra.annot <- suppressMessages(fread(input=paste("zcat",extra.annot.files[i]),header=T,showProgress=F,data.table=F)) 
+          extra.annot <- suppressMessages(fread(input=paste("zcat",extra.annot.files[i]),header=TRUE,showProgress=FALSE,data.table=FALSE)) 
         }
         extra.annot$CHR <- NULL
         extra.annot$BP <- NULL

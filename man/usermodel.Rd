@@ -5,7 +5,8 @@
 Function to run a user specified model based on output from multivariable LDSC
 }
 \usage{
-usermodel(covstruc,estimation="DWLS", model = "",std.lv=FALSE,imp_cov=FALSE,fix_resid=TRUE,toler=FALSE, Q_Factor=FALSE, \dots)
+usermodel(covstruc,estimation="DWLS", model = "",std.lv=FALSE,imp_cov=FALSE,
+	fix_resid=TRUE,toler=FALSE, Q_Factor=FALSE, ...)
 
 }
 \arguments{
@@ -17,6 +18,7 @@ usermodel(covstruc,estimation="DWLS", model = "",std.lv=FALSE,imp_cov=FALSE,fix_
    \item{fix_resid}{Optional argument to denote whether the user wants Genomic SEM to try troubleshooting a model that does not converge by fixing residual variances to be above 0 (default = TRUE)}
    \item{toler}{Optional argument to set lower tolerance for matrix inversion used to produce sandwich corrected standard errors. (default = FALSE)}
    \item{Q_Factor}{Optional argument to get a heterogeneity statistic for factor correlations. (default = FALSE)}
+   \item{...}{further arguments passed to or from other methods.}
 }
 
 \value{
@@ -26,6 +28,3 @@ usermodel(covstruc,estimation="DWLS", model = "",std.lv=FALSE,imp_cov=FALSE,fix_
 
 
 
-\examples{
-
-}

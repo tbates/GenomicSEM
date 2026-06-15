@@ -16,7 +16,7 @@ read_fusion <- function(files,trait.names=NULL,binary=NULL,N=NULL,perm=FALSE){
     
   }
   
-  files = lapply(files, read.table, header=T, quote="\"",fill=T,na.string=c(".",NA,"NA",""))
+  files = lapply(files, read.table, header=TRUE, quote="\"", fill = TRUE, na.strings=c(".",NA,"NA",""))
   
   print("Done reading in FUSION files")
   
@@ -33,10 +33,10 @@ read_fusion <- function(files,trait.names=NULL,binary=NULL,N=NULL,perm=FALSE){
     #dont leave at 1 so backing out SE is possible below
     files[[i]]$PERM.PV<-ifelse(files[[i]]$PERM.PV == 1, (files[[i]]$PERM.N-1)/files[[i]]$PERM.N,files[[i]]$PERM.PV)
     
-    #set to lowest possible empirical p-value given number of iteratations if empirical p = 0
+    #set to lowest possible empirical p-value given number of iterations if empirical p = 0
     files[[i]]$PERM.PV<-ifelse(files[[i]]$PERM.PV ==0, 1/files[[i]]$PERM.N,files[[i]]$PERM.PV)
     
-    files[[i]]$Z.perm <- sign(files[[i]]$TWAS.Z) * sqrt(qchisq(files[[i]]$PERM.PV,1,lower=F))
+    files[[i]]$Z.perm <- sign(files[[i]]$TWAS.Z) * sqrt(qchisq(files[[i]]$PERM.PV,1,lower.tail=FALSE))
     }
     
     if(binary[i] == TRUE){

@@ -5,7 +5,9 @@
 Function to obtain SNP effects on common factor along with index of SNP heterogeneity
 }
 \usage{
-commonfactorGWAS(covstruc=NULL,SNPs=NULL,estimation="DWLS",cores=NULL,toler=FALSE,SNPSE=FALSE,parallel=TRUE,GC="standard",MPI=FALSE,TWAS=FALSE,smooth_check=FALSE, \dots)
+commonfactorGWAS(covstruc=NULL,SNPs=NULL,estimation="DWLS",cores=NULL,toler=FALSE,
+	SNPSE=FALSE,parallel=TRUE,GC="standard",MPI=FALSE,
+	TWAS=FALSE,smooth_check=FALSE, ...)
 
 }
 \arguments{
@@ -20,6 +22,7 @@ commonfactorGWAS(covstruc=NULL,SNPs=NULL,estimation="DWLS",cores=NULL,toler=FALS
    \item{MPI}{Whether the function should use multi-node processing (i.e., MPI). Please note that this should only be used on a computing cluster on which the R package Rmpi is already installed.}
    \item{TWAS}{Whether the function is being used to estimate a multivariate TWAS using read_fusion output for the SNPs argument.} 
    \item{smooth_check}{Whether the function should save the consequent largest Zstatistic difference between the pre and post-smooth matrices.}
+   \item{...}{further arguments passed to or from other methods.}
 }
 
 \value{
@@ -29,6 +32,3 @@ commonfactorGWAS(covstruc=NULL,SNPs=NULL,estimation="DWLS",cores=NULL,toler=FALS
 
 
 
-\examples{
-
-}

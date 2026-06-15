@@ -208,7 +208,7 @@ output from ldsc (using covstruc = ...)  followed by the output from sumstats (u
     }
     if(MPI){
       #register MPI
-      cl <- getMPIcluster()
+      cl <- snow::getMPIcluster()
       #register cluster; no makecluster as ibrun already starts the MPI process.
       registerDoParallel(cl)
     } else {

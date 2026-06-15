@@ -341,7 +341,7 @@ userGWAS <- function(covstruc=NULL, SNPs=NULL, estimation="DWLS", model="", prin
     }
     if(MPI){
       #register MPI
-      cl <- getMPIcluster()
+      cl <- snow::getMPIcluster()
       #register cluster; no makecluster as ibrun already starts the MPI process.
       registerDoParallel(cl)
     } else {

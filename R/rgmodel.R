@@ -178,7 +178,7 @@ rgmodel <- function(LDSCoutput) {
         return(modelCFI)
       }
       
-      ##create inependence model for calculation of CFI
+      ##create independence model for calculation of CFI
       modelCFI<-write.null(k)
       
       ##run CFI model so it knows the reordering for the independence model
@@ -198,7 +198,7 @@ rgmodel <- function(LDSCoutput) {
     
     r<-nrow(lavInspect(ReorderModel, "cor.lv"))
     
-    if(class(empty3$value) != "lavaan"){
+    if(!inherits(empty3$value, "lavaan")){
       warning(paste("The function has stopped due to convergence issues for your primary model. Please contact us with your specific model and variables used or try specifying an alternative model"))
     }
     

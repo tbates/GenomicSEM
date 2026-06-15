@@ -12,7 +12,7 @@
     }
   }
   if (is.null(file)) {
-    file <- read.table(filename, header=T, quote="\"", fill=T, na.string=c(".", NA, "NA", ""))
+    file <- read.table(filename, header=TRUE, quote="\"", fill=TRUE, na.strings = c(".", NA, "NA", ""))
   }
   .LOG("Munging file: ", filename,file=log.file, print=TRUE)
 
@@ -98,7 +98,7 @@ Please note that this is likely effective sample size cut in half. The function 
   }
  
   #Compute Z score
-  file$Z <- sign(file$effect) * sqrt(qchisq(file$P,1,lower=F))
+  file$Z <- sign(file$effect) * sqrt(qchisq(file$P,1,lower.tail=FALSE))
   
   ##filter on INFO column at designated threshold provided for the info.filter argument (default = 0.9)
   if("INFO" %in% colnames(file)) {

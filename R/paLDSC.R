@@ -64,17 +64,17 @@ paLDSC <- function(S = S, V = V, r = NULL, p = NULL, save.pdf = F, diag = F, fa 
   #---- Get Dimensions of Matrices ----#
   k=dim(S)[1] #k phenotypes
   kstar=k*(k+1)/2 #kstar unique variances/covariances
-  Svec=lowerTriangle(S,diag=T) #vectorize S
+  Svec=lowerTriangle(S,diag=TRUE) #vectorize S
   SNULL=(0*S)
   diag(SNULL)=diag(S)
-  SNULLvec=lowerTriangle(SNULL,diag=T) #vectorize S null
+  SNULLvec=lowerTriangle(SNULL,diag=TRUE) #vectorize S null
   #---- Parallel Analysis ----#
   EIG=as.data.frame(matrix(NA,nrow=k,ncol=r))
   for (i in 1:r) {
     Sample_null=mvrnorm(n=1,mu=SNULLvec,Sigma=V) #Simulate a null vectorized correlation matrix with noise drawn from the multivariate sample distribution
     Sample_null_M=matrix(0,ncol=k,nrow=k) #Turn it back into a matrix
-    lowerTriangle(Sample_null_M,diag=T)=Sample_null
-    upperTriangle(Sample_null_M,diag=F)=upperTriangle(t(Sample_null_M))
+    lowerTriangle(Sample_null_M,diag=TRUE)=Sample_null
+    upperTriangle(Sample_null_M,diag=FALSE)=upperTriangle(t(Sample_null_M))
     EIG[,i]=eigen(Sample_null_M)$values #Store the eigenvalues
     cat("Running parallel analysis. Replication number: ",i,"\n")
   }
@@ -151,8 +151,8 @@ paLDSC <- function(S = S, V = V, r = NULL, p = NULL, save.pdf = F, diag = F, fa 
     for (i in 1:r) {
       Sample_null=mvrnorm(n=1,mu=SNULLvec,Sigma=V) #Simulate a null vectorized correlation matrtix with noise drawn from the multivariate sample distribution of S
       Sample_null_M=matrix(0,ncol=k,nrow=k) #Turn it back into a matrix
-      lowerTriangle(Sample_null_M,diag=T)=Sample_null
-      upperTriangle(Sample_null_M,diag=F)=upperTriangle(t(Sample_null_M))
+      lowerTriangle(Sample_null_M,diag=TRUE)=Sample_null
+      upperTriangle(Sample_null_M,diag=FALSE)=upperTriangle(t(Sample_null_M))
       Ssmooth<-as.matrix((nearPD(Sample_null_M, corr = T))$mat)
       EIGfa[,i]=fa(Ssmooth, fm = fm, nfactors = nfactors,SMC = FALSE, warnings = FALSE, rotate = "none")$values #store the eigen values
       cat("Running FA parallel analysis. Replication number: ",i,"\n")

@@ -302,7 +302,7 @@
     final$index <- NULL
     
     ##add in p-values
-    if(class(final$SE) != "factor"){
+    if(!inherits(final$SE, "factor")){
       final$Z_Estimate <- final$est/final$SE
       final$Pval_Estimate <- 2*pnorm(abs(final$Z_Estimate),lower.tail=FALSE)
     }else{

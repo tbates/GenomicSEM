@@ -71,7 +71,7 @@ usermodel <- function (covstruc, estimation = "DWLS", model = "", CFIcalc=TRUE,
                                               std.lv = std.lv, optim.dx.tol = 0.01, optim.force.converged = T, 
                                               control = list(iter.max = 1)))
   r <- nrow(lavInspect(ReorderModel, "cor.lv"))
-  if (class(empty3$value) != "lavaan") {
+  if (!inherits(empty3$value != "lavaan")) {
     warning(paste("The function has stopped due to convergence issues for your primary model. Please contact us with your specific model and variables used or try specifying an alternative model"))
   }
   order <- .rearrange(k = k, fit = ReorderModel, names = rownames(S_LD))
@@ -93,8 +93,7 @@ usermodel <- function (covstruc, estimation = "DWLS", model = "", CFIcalc=TRUE,
   empty4$warning$message[1] <- ifelse(is.null(empty4$warning$message), 
                                       empty4$warning$message[1] <- 0, empty4$warning$message[1])
   if (fix_resid == TRUE) {
-    if (class(empty4$value)[1] == "simpleError" | lavInspect(Model1_Results, 
-                                                             "converged") == FALSE) {
+    if (!inherits(empty4$value, "simpleError") | lavInspect(Model1_Results, "converged") == FALSE) {
       n <- combn(letters, 4)[, sample(1:14000, k, replace = FALSE)]
       Model3 <- ""
       for (p in 1:k) {
@@ -117,9 +116,8 @@ usermodel <- function (covstruc, estimation = "DWLS", model = "", CFIcalc=TRUE,
                                                       sample.cov = S_LD, estimator = "ML", std.lv = std.lv, 
                                                       sample.nobs = 200, optim.dx.tol = 0.01, sample.cov.rescale = FALSE, optim.force.converged = T))
       }
-      if (class(empty4$value)[1] != "lavaan") {
-        if (grepl("duplicate", as.character(empty4$value)[1]) == 
-            TRUE) {
+      if (!inherits(empty4$value, "lavaan")) {
+        if (grepl("duplicate", as.character(empty4$value)[1]) == TRUE) {
           Model1 <- model
         }
         else {
@@ -131,7 +129,7 @@ usermodel <- function (covstruc, estimation = "DWLS", model = "", CFIcalc=TRUE,
       }
     }
   }
-  if (class(empty4$value)[1] == "simpleError") {
+  if (!inherits(empty4$value, "simpleError")) {
     warning("The model failed to converge on a solution. Please try specifying an alternative model")
   }
   S2.delt <- lavInspect(Model1_Results, "delta")
@@ -143,7 +141,7 @@ usermodel <- function (covstruc, estimation = "DWLS", model = "", CFIcalc=TRUE,
       warning("The model failed to converge on a solution. Please try specifying an alternative model.")
     }
   }
-  if (class(bread2$value)[1] != "matrix") {
+  if (!inherits(bread2$value, "matrix")) {
     warning("Error: The primary model did not converge! Additional warnings or errors are likely being printed by lavaan. \n            The model output is also printed below (without standard errors) in case this is helpful for troubleshooting. Please note\n            that these results should not be interpreted.")
     check <- 1
     unstand <- data.frame(inspect(Model1_Results, "list")[, 
@@ -154,7 +152,7 @@ usermodel <- function (covstruc, estimation = "DWLS", model = "", CFIcalc=TRUE,
     colnames(results) = c("lhs", "op", "rhs", "Unstandardized_Estimate")
     print(results)
   }
-  if (class(bread2$value)[1] == "matrix") {
+  if (!inherits(bread2$value, "matrix")) {
     lettuce <- S2.W %*% S2.delt
     Ohtt <- bread %*% t(lettuce) %*% V_Reorder %*% lettuce %*% 
       bread
@@ -405,8 +403,7 @@ usermodel <- function (covstruc, estimation = "DWLS", model = "", CFIcalc=TRUE,
       W_stand <- lavInspect(Fit_stand, "WLS.V")
       bread_stand2 <- .tryCatch.W.E(bread_stand <- solve(t(delt_stand) %*% 
                                                            W_stand %*% delt_stand, tol = toler))
-      if (class(bread_stand2$value)[1] != "matrix" | lavInspect(Fit_stand, 
-                                                                "converged") == FALSE | class(emptystand)[1] == 
+      if (!inherits(bread_stand2$value, "matrix") | lavInspect(Fit_stand, "converged") == FALSE | class(emptystand)[1] == 
           "simpleError") {
         warning("The standardized model failed to converge. This likely indicates more general problems with the model solution. Unstandardized results are printed below but this should be interpreted with caution.")
         unstand <- data.frame(inspect(Model1_Results, 
@@ -606,7 +603,7 @@ usermodel <- function (covstruc, estimation = "DWLS", model = "", CFIcalc=TRUE,
       }
     }
   }
-  if (class(bread2$value)[1] == "matrix" & check == 2) {
+  if (!inherits(bread2$value, "matrix") & check == 2) {
     colnames(results) = c("lhs", "op", "rhs", "Unstand_Est", "Unstand_SE", "STD_Genotype", "STD_Genotype_SE",  "STD_All")
     
     colnames(modelfit) = c("chisq", "df", "AIC", "CFI", "SRMR")

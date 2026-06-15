@@ -1,11 +1,13 @@
 \name{ldsc}
 \alias{ldsc}
-\title{build a convariance structure using LD score regression in R}
+\title{build a covariance structure using LD score regression in R}
 \description{
-Function to run LD score regression (\link{https://github.com/bulik/ldsc}) to compute the genetic covariance between a series of traits based on genome wide summary statistics obtained from GWAS. The results generate by this function are necessary and sufficient to facilitate the fit of structural equation models (or other multivariate models) to the genetic covariance matrix.
+Function to run LD score regression (\url{https://github.com/bulik/ldsc}) to compute the genetic covariance between a series of traits based on genome wide summary statistics obtained from GWAS. The results generate by this function are necessary and sufficient to facilitate the fit of structural equation models (or other multivariate models) to the genetic covariance matrix.
 }
 \usage{
-ldsc(traits,sample.prev,population.prev,ld,wld,trait.names=NULL, sep_weights = FALSE,chr=22,n.blocks=200,ldsc.log=NULL,stand=FALSE,select=FALSE, \dots)
+ldsc(traits,sample.prev,population.prev,ld,wld,trait.names=NULL, 
+	sep_weights = FALSE,chr=22,n.blocks=200,ldsc.log=NULL,
+	stand=FALSE,select=FALSE, ...)
 
 }
 \arguments{
@@ -21,20 +23,18 @@ ldsc(traits,sample.prev,population.prev,ld,wld,trait.names=NULL, sep_weights = F
    \item{ldsc.log}{How you want to name your .log file for ldsc. The default is NULL as the package will automatically name the log based in the file names unless a log file name is provided to this arugment. }
    \item{stand}{Whether you want the package to also output a genetic correlation and sampling correlation matrix. Default is FALSE.}
    \item{select}{Whether you want the package to estimate LDSC using only even or odd chromosomes by setting select to "ODD" and "EVEN" respectively. It can also be set to a set of numbers, such as c(1,3,10), to run ldsc on a specific chromosome or chromosomes.  Default is FALSE, in which case LDSC is estimated using all chromosomes.}             
-   \item{chisq.max}{Maximum value of the squared Z statistics for a SNP that is considered in the LD-score regression. Default behaviour is to set to the maximum of 80 and N*0.001}                 
-       }
+   \item{chisq.max}{Maximum value of the squared Z statistics for a SNP that is considered in the LD-score regression. Default behaviour is to set to the maximum of 80 and N*0.001}
+   \item{...}{further arguments passed to or from other methods.}
+}
 
 \value{
    The function returns a list with 5 named entries
    \item{S}{estimated genetic covariance matrix}
    \item{V}{variance covariance matrix of the parameter estimates in S}
    \item{I}{matrix containing the "cross trait intercepts", or the error covariance between traits induced by overlap, in terms of subjects, between the GWASes on which the analyses are based}
-   \item{N}{a vector contsaining the sample size (for the genetic variances) and the geometric mean of sample sizes (i.e. sqrt(N1,N2)) between two samples for the covariances }
+   \item{N}{a vector constraining the sample size (for the genetic variances) and the geometric mean of sample sizes (i.e. sqrt(N1,N2)) between two samples for the covariances }
    \item{m}{number of SNPs used to compute the LD scores with. }
 }
 
 
 
-\examples{
-
-}
