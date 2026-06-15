@@ -5,8 +5,8 @@
 Function to automate writing model syntax based on EFA loadings. This is most likely to be useful when examining larger numbers of traits (e.g., > 10).
 }
 \usage{
-write.model(Loadings,S_LD,cutoff,fix_resid=TRUE,bifactor=FALSE,
-	mustload=FALSE,common=FALSE, ...)
+write.model(Loadings,S_LD,cutoff,fix_resid = TRUE, bifactor = FALSE,
+	mustload = FALSE, common = FALSE)
 }
 \arguments{
    \item{Loadings}{The matrix of EFA loadings. Note that the number of columns in this matrix determines how many factors are specified in the model.}
@@ -16,12 +16,8 @@ write.model(Loadings,S_LD,cutoff,fix_resid=TRUE,bifactor=FALSE,
    \item{bifactor}{Whether to specify a bifactor model in which a general factor predicts all included traits and the remaining factors are specified to be orthogonal of one another.} 
    \item{mustload}{Whether all variables should load on at least one factor, even if they dont meet the threshold specified using the cutoff argument.}
    \item{common}{Whether to specify a common factor model.}
-   \item{...}{further arguments passed to or from other methods.}
 }
 
 \value{
   The function outputs model syntax that can be used to run the model using the usermodel function in Genomic SEM. 
 }
-
-
-

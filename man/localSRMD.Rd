@@ -6,7 +6,7 @@ Given a set of parameter values from Genomic SEM models, calculate the extent to
 }
 
 \usage{
- localSRMD(unconstrained, constrained, lhsvar, rhsvar, ...)
+ localSRMD(unconstrained, constrained, lhsvar, rhsvar)
 }
 
 \arguments{  
@@ -14,7 +14,6 @@ Given a set of parameter values from Genomic SEM models, calculate the extent to
    \item{constrained}{A vector of parameter values from a constrained structural equation model, where focal parameters are constrained to be equal across groups.}
    \item{lhsvar}{A list containing the variances, in each group, of the variables in the usermodel() results column lhs}
    \item{rhsvar}{A list containing the variances, in each group, of the variables in the usermodel() results column rhs}
-   \item{...}{further arguments passed to or from other methods.}
 }
 
 \value{

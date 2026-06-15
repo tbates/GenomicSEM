@@ -4,7 +4,7 @@
 \alias{rgmodel}
 \title{Estimate a model-implied genetic covariance matrix}
 \usage{
-rgmodel(LDSCoutput)
+rgmodel(LDSCoutput, model, std.lv = TRUE, estimation = TRUE, sub = NULL, ...)
 }
 \arguments{
 \item{LDSCoutput}{A list output from `ldsc()` containing genetic covariance matrices and related data.}

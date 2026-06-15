@@ -8,12 +8,11 @@
 #'          matching the scaling of \code{S}.
 #' @param r Number of Monte Carlo replications to simulate null correlation matrices. Default is \code{500}.
 #' @param p Percentile threshold for significance (default = \code{0.95}). Eigenvalues from \code{S} must exceed this threshold to be considered significant.
+#' @param save.pdf Logical. Whether to save scree plots to a PDF file. Default is \code{FALSE}.
 #' @param diag Logical. If \code{TRUE}, diagonalized PA is performed assuming uncorrelated sampling errors. Default is \code{FALSE}.
 #' @param fa Logical. If \code{TRUE}, also performs exploratory factor analysis and computes eigenvalues from factor solutions. Default is \code{FALSE}.
 #' @param fm Factor extraction method used when \code{fa = TRUE}. Default is \code{"minres"}. See \code{psych::fa.parallel()}.
 #' @param nfactors Number of factors to extract in factor analysis if \code{fa = TRUE}. Default is \code{1}.
-#' @param save.pdf Logical. Whether to save scree plots to a PDF file. Default is \code{FALSE}.
-#' @param only.values Logical. If \code{TRUE}, only eigenvalues are returned. Default is \code{FALSE}.
 #'
 #' @details
 #' This method adapts Horn’s (1965) classic parallel analysis approach to LDSC-based genomic data. Eigenvalues from the observed LDSC-derived matrix are compared against distributions of eigenvalues simulated under the null model using the multivariate LDSC sampling distribution. The number of components to retain is determined by comparing each observed eigenvalue to the corresponding percentile threshold from the simulated distribution.
@@ -42,8 +41,7 @@
 #' @seealso \link[psych]{fa.parallel}, \link[stats]{eigen}
 #'
 #' @export
-paLDSC <- function(S = S, V = V, r = NULL, p = NULL, save.pdf = F, diag = F, fa = F,
-                   fm = NULL, nfactors = NULL) {
+paLDSC <- function(S = S, V = V, r = NULL, p = NULL, save.pdf = FALSE, diag = FALSE, fa = FALSE, fm = NULL, nfactors = NULL) {
   list.of.packages <- c("ggplot2", "MASS","matrixStats","gdata","psych","matrixStats","egg","ggpubr","Matrix")
   new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
   if(length(new.packages)) install.packages(new.packages)
@@ -64,7 +62,7 @@ paLDSC <- function(S = S, V = V, r = NULL, p = NULL, save.pdf = F, diag = F, fa 
   #---- Get Dimensions of Matrices ----#
   k=dim(S)[1] #k phenotypes
   kstar=k*(k+1)/2 #kstar unique variances/covariances
-  Svec=lowerTriangle(S,diag=TRUE) #vectorize S
+  Svec= lowerTriangle(S, diag = TRUE) #vectorize S
   SNULL=(0*S)
   diag(SNULL)=diag(S)
   SNULLvec=lowerTriangle(SNULL,diag=TRUE) #vectorize S null

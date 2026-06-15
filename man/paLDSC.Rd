@@ -9,9 +9,9 @@ paLDSC(
   V = V,
   r = NULL,
   p = NULL,
-  save.pdf = F,
-  diag = F,
-  fa = F,
+  save.pdf = FALSE,
+  diag = FALSE,
+  fa = FALSE,
   fm = NULL,
   nfactors = NULL
 )
@@ -36,8 +36,6 @@ matching the scaling of \code{S}.}
 \item{fm}{Factor extraction method used when \code{fa = TRUE}. Default is \code{"minres"}. See \code{psych::fa.parallel()}.}
 
 \item{nfactors}{Number of factors to extract in factor analysis if \code{fa = TRUE}. Default is \code{1}.}
-
-\item{only.values}{Logical. If \code{TRUE}, only eigenvalues are returned. Default is \code{FALSE}.}
 }
 \value{
 A list containing observed eigenvalues, simulated eigenvalue distributions, and the suggested number of factors/components to extract.

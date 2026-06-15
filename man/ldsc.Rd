@@ -5,11 +5,12 @@
 Function to run LD score regression (\url{https://github.com/bulik/ldsc}) to compute the genetic covariance between a series of traits based on genome wide summary statistics obtained from GWAS. The results generate by this function are necessary and sufficient to facilitate the fit of structural equation models (or other multivariate models) to the genetic covariance matrix.
 }
 \usage{
-ldsc(traits,sample.prev,population.prev,ld,wld,trait.names=NULL, 
-	sep_weights = FALSE,chr=22,n.blocks=200,ldsc.log=NULL,
-	stand=FALSE,select=FALSE, ...)
+ldsc(traits,sample.prev,population.prev,ld,wld,
+	trait.names=NULL, sep_weights = FALSE,chr=22,
+	n.blocks=200,ldsc.log=NULL,stand=FALSE,select=FALSE, chisq.max = NA)
 
 }
+
 \arguments{
    \item{traits}{A vector of strings which point to  LDSC munged files for trait you want to include in a Genomic SEM model.}
    \item{sample.prev}{A vector of sample prevalences for dichotomous traits and \code{NA} for continous traits}
@@ -24,7 +25,6 @@ ldsc(traits,sample.prev,population.prev,ld,wld,trait.names=NULL,
    \item{stand}{Whether you want the package to also output a genetic correlation and sampling correlation matrix. Default is FALSE.}
    \item{select}{Whether you want the package to estimate LDSC using only even or odd chromosomes by setting select to "ODD" and "EVEN" respectively. It can also be set to a set of numbers, such as c(1,3,10), to run ldsc on a specific chromosome or chromosomes.  Default is FALSE, in which case LDSC is estimated using all chromosomes.}             
    \item{chisq.max}{Maximum value of the squared Z statistics for a SNP that is considered in the LD-score regression. Default behaviour is to set to the maximum of 80 and N*0.001}
-   \item{...}{further arguments passed to or from other methods.}
 }
 
 \value{

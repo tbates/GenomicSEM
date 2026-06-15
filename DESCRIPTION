@@ -4,7 +4,7 @@ Date: 2026-06-20
 Type: Package
 Title: Structural Equation Modeling Based on GWAS Summary Statistics
 Authors@R: c(
-	person("Andrew"  , "Grotzinger" , role = c("aut", "cre"), email = "timothy.c.bates@gmail.com"),
+	person("Andrew"  , "Grotzinger" , role = c("aut", "cre"), email = "agrotzin@utexas.edu"),
 	person("Matthijs", "van der Zee", role = c("ctb")),
 	person("Mijke"   , "Rhemtulla"  , role = c("ctb")),
 	person("Hill"    , "Ip"         , role = c("ctb")),
@@ -34,9 +34,12 @@ Imports:
    Matrix,
    matrixStats,
    plyr,
+   Rmpfr,
    R.utils,
    readr,
-   stringr
+   snow,
+   stringr,
+   tidyr
 BugReports: https://github.com/GenomicSEM/GenomicSEM/issues
 LazyData: true
 RoxygenNote: 8.0.0

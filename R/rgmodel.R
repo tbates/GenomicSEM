@@ -31,9 +31,6 @@
 #'
 #' @export
 rgmodel <- function(LDSCoutput, model, std.lv = TRUE, estimation = TRUE, sub = NULL, ...) {
-  # your existing rgmodel function code here
-}
-rgmodel <- function(LDSCoutput) {
   # Load required packages
   list.of.packages <- c("data.table", "GenomicSEM","dplyr","stringr","stringr","simsalapar","gdata","Matrix","lavaan")
   new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]

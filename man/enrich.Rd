@@ -6,7 +6,7 @@ Function to take output from multivariable S-LDSC and estimate enrichment of mod
 }
 \usage{
 enrich(s_covstruc, model = "",params,fix= "regressions",std.lv=FALSE,
-	rm_flank=TRUE,tau=FALSE,base=TRUE,toler=NULL,fixparam=NULL, ...)
+	rm_flank=TRUE,tau=FALSE,base=TRUE,toler=NULL,fixparam=NULL)
 
 }
 \arguments{
@@ -20,7 +20,6 @@ enrich(s_covstruc, model = "",params,fix= "regressions",std.lv=FALSE,
    \item{base}{Optional argument to denote whether the user wants to include the full model output from the genome-wide (i.e., baseline) matrix (default = TRUE)}
    \item{toler}{Optional argument to manually set tolerance for matrix inversion.}
    \item{fixparam}{Optional argument to manually fix parameters when estimating the model within annotations}
-   \item{...}{further arguments passed to or from other methods.}
 }
 
 \value{

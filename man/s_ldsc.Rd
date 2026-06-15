@@ -6,7 +6,7 @@ Function to run Stratified LD score regression.
 }
 \usage{
 s_ldsc(traits,sample.prev=NULL,population.prev=NULL,ld,wld,frq,trait.names=NULL,
-	n.blocks=200,ldsc.log=NULL,exclude_cont=TRUE, ...)
+	n.blocks=200,ldsc.log=NULL,exclude_cont=TRUE)
 
 }
 \arguments{
@@ -20,7 +20,6 @@ s_ldsc(traits,sample.prev=NULL,population.prev=NULL,ld,wld,frq,trait.names=NULL,
    \item{n.blocks}{Number of blocks to use for the jackknife procedure which is used to estimate entries in V, higher values will be optimal if you have a large number of variables and also slower, defaults to 200.}   
    \item{ldsc.log}{What to name the .log file if you want to override default to name file based on file names used as input.}   
    \item{exclude_cont}{Whether to exclude continuous annotations from S-LDSC estimation.} 
-   \item{...}{further arguments passed to or from other methods.}  
  }
 
 \value{

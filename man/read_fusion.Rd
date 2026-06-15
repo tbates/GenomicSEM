@@ -5,7 +5,7 @@
 Function to format TWAS summary statistics for T-SEM
 }
 \usage{
-read_fusion(files,trait.names=NULL,binary=NULL,N=NULL,perm=FALSE, ...)
+read_fusion(files, trait.names = NULL, binary=NULL, N= NULL, perm=FALSE)
 
 }
 \arguments{
@@ -14,8 +14,6 @@ read_fusion(files,trait.names=NULL,binary=NULL,N=NULL,perm=FALSE, ...)
    \item{binary}{Vector specifying whether each trait is binary (TRUE) or continuous (FALSE)}
    \item{N}{The sample size to use when backing out the betas and SEs from FUSION Z-statistics. This should reflect the sum of effective sample size for binary traits}
    \item{perm}{Whether you want to use the permutation test p-values from FUSION. Default = FALSE}
-   \item{...}{further arguments passed to or from other methods.}
-   
 }
 
 \value{
