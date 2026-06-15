@@ -22,9 +22,13 @@ src-x64/
 /*.Rcheck/
 
 # RStudio files
+^.*\.Rproj$
+^\.Rproj\.user$
+.Rproj.user
 .Rproj.user/
 .Rproj/
 *.Rproj
+GenomicSEM.Rproj
 
 # produced vignettes
 vignettes/*.html
@@ -36,9 +40,7 @@ vignettes/*.pdf
 # knitr and R markdown default cache directories
 /*_cache/
 /cache/
-.Rproj.user
-^.*\.Rproj$
-^\.Rproj\.user$
 tmp-data
-GenomicSEM.Rproj
+
+# MacOS
 .DS_Store
