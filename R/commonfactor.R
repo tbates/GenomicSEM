@@ -20,7 +20,7 @@ commonfactor <-function(covstruc,estimation="DWLS"){
   } 
 
   ##code to write null model for calculation of CFI
-  write.null<-function(k, label = "V", label2 = "VF") {
+  write.null <- function(k, label = "V", label2 = "VF") {
     Model3<-""
     for (p in 1:k) {
       linestart3 <- paste(colnames(S_LD)[p], " ~~ ", colnames(S_LD)[p], sep = "")
