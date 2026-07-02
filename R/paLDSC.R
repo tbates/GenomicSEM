@@ -41,77 +41,68 @@
 #' @seealso \link[psych]{fa.parallel}, \link[stats]{eigen}
 #'
 #' @export
-paLDSC <- function(S = S, V = V, r = NULL, p = NULL, save.pdf = FALSE, diag = FALSE, fa = FALSE, fm = NULL, nfactors = NULL) {
-  list.of.packages <- c("ggplot2", "MASS","matrixStats","gdata","psych","matrixStats","egg","ggpubr","Matrix")
-  new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-  if(length(new.packages)) install.packages(new.packages)
-  invisible(lapply(list.of.packages, library,character.only = TRUE))
-  if (is.null(r)){
-    r <- 500
-  }
-  if (is.null(p)){
-    p <- .95
-  }
-  if (is.null(fm)){
-    fm <- "minres"
-  }
-  if (is.null(nfactors)){
-    nfactors <- 1
-  }
+paLDSC <- function(S = S, V = V, r = 500, p = .95, save.pdf = FALSE, diag = FALSE, fa = FALSE, fm = "minres", nfactors = 1) {
+	# some nonsense about importing packages ???
+	# list.of.packages <- c("ggplot2", "MASS","matrixStats","gdata","psych","matrixStats","egg","ggpubr","Matrix")
+	# new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+	# if(length(new.packages)) install.packages(new.packages)
+	# invisible(lapply(list.of.packages, library,character.only = TRUE))
   
   #---- Get Dimensions of Matrices ----#
-  k=dim(S)[1] #k phenotypes
-  kstar=k*(k+1)/2 #kstar unique variances/covariances
-  Svec= lowerTriangle(S, diag = TRUE) #vectorize S
-  SNULL=(0*S)
-  diag(SNULL)=diag(S)
-  SNULLvec=lowerTriangle(SNULL,diag=TRUE) #vectorize S null
+  k           = dim(S)[1] #k phenotypes
+  kstar       = k*(k+1)/2 #kstar unique variances/covariances
+  Svec        = lowerTriangle(S, diag = TRUE) #vectorize S
+  SNULL       = (0*S)
+  diag(SNULL) = diag(S)
+  SNULLvec    = lowerTriangle(SNULL,diag=TRUE) #vectorize S null
   #---- Parallel Analysis ----#
-  EIG=as.data.frame(matrix(NA,nrow=k,ncol=r))
+  EIG = as.data.frame(matrix(NA, nrow=k, ncol=r))
   for (i in 1:r) {
-    Sample_null=mvrnorm(n=1,mu=SNULLvec,Sigma=V) #Simulate a null vectorized correlation matrix with noise drawn from the multivariate sample distribution
-    Sample_null_M=matrix(0,ncol=k,nrow=k) #Turn it back into a matrix
+	#Simulate a null vectorized correlation matrix with noise drawn from the multivariate sample distribution
+    Sample_null   = mvrnorm(n=1,mu=SNULLvec,Sigma=V)
+    Sample_null_M = matrix(0,ncol=k,nrow=k) #Turn it back into a matrix
     lowerTriangle(Sample_null_M,diag=TRUE)=Sample_null
     upperTriangle(Sample_null_M,diag=FALSE)=upperTriangle(t(Sample_null_M))
     EIG[,i]=eigen(Sample_null_M)$values #Store the eigenvalues
     cat("Running parallel analysis. Replication number: ",i,"\n")
   }
   #---- Find the p percentile for permuted and observed eigenvalues ----#
-  Parallel_values=rowQuantiles(as.matrix(EIG),probs=p)
-  Observed_PCA_values=eigen(S)$values
-  #Create data frame from observed eigenvalue data
-  obs = data.frame(Observed_PCA_values)
-  obs$type = c('Observed Data')
-  obs$num = c(row.names(obs))
-  obs$num = as.numeric(obs$num)
+  Parallel_values     = rowQuantiles(as.matrix(EIG),probs=p)
+  Observed_PCA_values = eigen(S)$values
+  # Create data frame from observed eigenvalue data
+  obs           = data.frame(Observed_PCA_values)
+  obs$type      = c('Observed Data')
+  obs$num       = c(row.names(obs))
+  obs$num       = as.numeric(obs$num)
   colnames(obs) = c('eigenvalue', 'type', 'num')
-  #Create data frame from permuted data
-  simPA = data.frame(Parallel_values)
-  simPA$type = paste("Simulated data (",(p*100),"th %ile)",sep = "")
-  simPA$num = c(row.names(obs))
-  simPA$num = as.numeric(simPA$num)
+  # Create data frame from permuted data
+  simPA           = data.frame(Parallel_values)
+  simPA$type      = paste("Simulated data (",(p*100),"th %ile)",sep = "")
+  simPA$num       = c(row.names(obs))
+  simPA$num       = as.numeric(simPA$num)
   colnames(simPA) = c('eigenvalue', 'type', 'num')
-  eigendatPA = rbind(obs,simPA)
-  nfactPA <- min(which((eigendatPA[1:k,1] < eigendatPA[(k+1):(k*2),1] ) == TRUE))-1
-  #Create vector for observed minus permuted data and # of factors
-  obsPA <- data.frame(obs[1]-simPA[1])
-  obsPA$type = paste("Observed minus simulated data (",(p*100),"th %ile)",sep = "")
-  obsPA$num = c(row.names(obs))
-  obsPA$num = as.numeric(obsPA$num)
+  eigendatPA      = rbind(obs,simPA)
+  nfactPA         = min(which((eigendatPA[1:k,1] < eigendatPA[(k+1):(k*2),1] ) == TRUE))-1
+  # Create vector for observed minus permuted data and # of factors
+  obsPA           = data.frame(obs[1]-simPA[1])
+  obsPA$type      = paste("Observed minus simulated data (",(p*100),"th %ile)",sep = "")
+  obsPA$num       = c(row.names(obs))
+  obsPA$num       = as.numeric(obsPA$num)
   colnames(obsPA) = c('eigenvalue', 'type', 'num')
-  nfactobsPA <- which(obsPA < 0)[1]-1
+  nfactobsPA      = which(obsPA < 0)[1]-1
   
   if (diag == T) { 
-    Vd_stand=0*V
-    diag(Vd_stand)=diag(V)
+    Vd_stand = 0*V
+    diag(Vd_stand) = diag(V)
     #---- Diagonalized Parallel Analysis ----#
-    EIGd=as.data.frame(matrix(NA,nrow=k,ncol=r))
+    EIGd = as.data.frame(matrix(NA,nrow=k,ncol=r))
     for (i in 1:r) {
-      Sample_null=mvrnorm(n=1,mu=SNULLvec,Sigma=Vd_stand) #Simulate a null vectorized correlation matrtix with noise drawn from the multivariate sample distribution of S
-      Sample_null_M=matrix(0,ncol=k,nrow=k) #Turn it back into a matrix
-      lowerTriangle(Sample_null_M,diag=T)=Sample_null
-      upperTriangle(Sample_null_M,diag=F)=upperTriangle(t(Sample_null_M))
-      EIGd[,i]=eigen(Sample_null_M)$values #Store the eigen values
+	  # Simulate a null vectorized correlation matrtix with noise drawn from the multivariate sample distribution of S
+      Sample_null                      = mvrnorm(n=1,mu=SNULLvec,Sigma=Vd_stand)
+      Sample_null_M                    = matrix(0,ncol=k,nrow=k) #Turn it back into a matrix
+      lowerTriangle(Sample_null_M,diag = T)=Sample_null
+      upperTriangle(Sample_null_M,diag = F)=upperTriangle(t(Sample_null_M))
+      EIGd[,i]                         = eigen(Sample_null_M)$values #Store the eigen values
       cat("Running diagonalized parallel analysis. Replication number: ",i,"\n")
     }
     
@@ -322,57 +313,48 @@ paLDSC <- function(S = S, V = V, r = NULL, p = NULL, save.pdf = FALSE, diag = FA
     }
   }
   
-  print(pPA)
-  print(pobsPA)
-  cat("------------------------------------------------------------------------","\n")
-  cat("Parallel Analysis suggests extracting",nfactPA,"components","\n")
-  cat("------------------------------------------------------------------------","\n")
+	print(pPA)
+	print(pobsPA)
+	cat("------------------------------------------------------------------------","\n")
+	cat("Parallel Analysis suggests extracting",nfactPA,"components","\n")
+	cat("------------------------------------------------------------------------","\n")
   
-  if (diag == T){
-    print(pPAd)
-    print(pobsPAd)
-    cat("Diagonalized Parallel Analysis suggests extracting",nfactPAd,"components","\n")
-    cat("------------------------------------------------------------------------","\n")
-  }
-  
-  if (fa == T){
-    print(pPAfa)
-    print(pobsPAfa)
-    cat("------------------------------------------------------------------------","\n")
-    cat("Parallel Analysis suggests extracting",nfactPAfa,"factors","\n")
-    cat("------------------------------------------------------------------------","\n")
-    if (diag == T){
-      print(pPAdfa)
-      print(pobsPAdfa)
-      cat("------------------------------------------------------------------------","\n")
-      cat("Diagonalized Parallel Analysis suggests extracting",nfactPAdfa,"factors","\n")
-      cat("------------------------------------------------------------------------","\n")
-    }
-  }
-  
-  
-  if (isTRUE(save.pdf)){
-    figurePCA <- ggarrange(pPA, pobsPA, 
-                           labels = c(NA,NA),
-                           ncol = 1, nrow = 2)
-    ggexport(figurePCA, filename = "PA_LDSC.pdf",res = 300, verbose = F)
-    if (diag == T){
-      figurePCAd <- ggarrange(pPAd, pobsPAd, 
-                              labels = c(NA,NA),
-                              ncol = 1, nrow = 2)
-      ggexport(figurePCAd, filename = "Diagonalized_PA_LDSC.pdf",res = 300, verbose = F)
-    }
-    if (fa == T){
-      figureFA <- ggarrange(pPAfa, pobsPAfa, 
-                            labels = c(NA,NA),
-                            ncol = 1, nrow = 2)
-      ggexport(figureFA, filename = "FA_PA_LDSC.pdf",res = 300, verbose = F)
-      if (diag == T){
-        figureFAd <- ggarrange(pPAdfa, pobsPAdfa, 
-                               labels = c(NA,NA),
-                               ncol = 1, nrow = 2)
-        ggexport(figureFAd, filename = "FA_Diagonalized_PA_LDSC.pdf",res = 300, verbose = F)
-      }
-    }
-  }
+	if (diag == T){
+		print(pPAd)
+		print(pobsPAd)
+		cat("Diagonalized Parallel Analysis suggests extracting",nfactPAd,"components","\n")
+		cat("------------------------------------------------------------------------","\n")
+	}
+
+	if(fa){
+		print(pPAfa)
+		print(pobsPAfa)
+		cat("------------------------------------------------------------------------","\n")
+		cat("Parallel Analysis suggests extracting",nfactPAfa,"factors","\n")
+		cat("------------------------------------------------------------------------","\n")
+		if (diag){
+		  print(pPAdfa)
+		  print(pobsPAdfa)
+		  cat("------------------------------------------------------------------------","\n")
+		  cat("Diagonalized Parallel Analysis suggests extracting",nfactPAdfa,"factors","\n")
+		  cat("------------------------------------------------------------------------","\n")
+		}
+	}
+    
+	if (isTRUE(save.pdf)){
+		figurePCA = ggarrange(pPA, pobsPA, labels = c(NA,NA), ncol = 1, nrow = 2)
+		ggexport(figurePCA, filename = "PA_LDSC.pdf",res = 300, verbose = FALSE)
+		if (diag){
+			figurePCAd = ggarrange(pPAd, pobsPAd, labels = c(NA,NA), ncol = 1, nrow = 2)
+			ggexport(figurePCAd, filename = "Diagonalized_PA_LDSC.pdf",res = 300, verbose = F)
+		}
+		if (fa){
+			figureFA = ggarrange(pPAfa, pobsPAfa, labels = c(NA,NA), ncol = 1, nrow = 2)
+			ggexport(figureFA, filename = "FA_PA_LDSC.pdf",res = 300, verbose = F)
+			if (diag){
+				figureFAd = ggarrange(pPAdfa, pobsPAdfa, labels = c(NA,NA), ncol = 1, nrow = 2)
+				ggexport(figureFAd, filename = "FA_Diagonalized_PA_LDSC.pdf",res = 300, verbose = F)
+			}
+		}
+	}
 }

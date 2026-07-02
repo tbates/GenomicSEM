@@ -7,13 +7,13 @@
 paLDSC(
   S = S,
   V = V,
-  r = NULL,
-  p = NULL,
+  r = 500,
+  p = 0.95,
   save.pdf = FALSE,
   diag = FALSE,
   fa = FALSE,
-  fm = NULL,
-  nfactors = NULL
+  fm = "minres",
+  nfactors = 1
 )
 }
 \arguments{

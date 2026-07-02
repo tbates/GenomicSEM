@@ -17,11 +17,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Andrew Grotzinger \email{timothy.c.bates@gmail.com}
+\strong{Maintainer}: Andrew Grotzinger \email{agrotzin@utexas.edu}
 
 Authors:
 \itemize{
-  \item Andrew Grotzinger \email{timothy.c.bates@gmail.com}
+  \item Andrew Grotzinger \email{agrotzin@utexas.edu}
 }
 
 Other contributors:

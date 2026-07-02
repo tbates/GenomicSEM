@@ -82,26 +82,26 @@ s_ldsc <- function(traits,sample.prev=NULL,population.prev=NULL,ld,wld,frq,trait
     }
   }
   
-  x <- suppressMessages(ldply(.data=x.files,.fun=readLdFunc))
+  x <- suppressMessages(bind_rows(lapply(x.files, readLdFunc)))
   x$CM <- NULL
   x$MAF <- NULL
   
   ##read in the M_5_50 files (number of SNPs in annotation by chromosome)
   m.files <- sort(Sys.glob(paste0(ld1,"*M_5_50")))
   readMFunc <- function(x){dum <- read.table(file=x, header=F)}
-  m <- ldply(.data=m.files,.fun=readMFunc)
+  m <- bind_rows(lapply(m.files, readMFunc))
   
   ##read in additional annotations on top of baseline if relevant
   if(!is.null(ld2)){
     for(i in 1:length(ld2)){
       .LOG("Reading in LD scores from ",paste0(ld2[i],".[1-22]"),"\n", file=log.file)
       extra.x.files <- sort(Sys.glob(paste0(ld2[i],"*l2.ldscore*")))
-      extra.ldscore <- suppressMessages(ldply(.data=extra.x.files,.fun=readLdFunc))
+      extra.ldscore <- suppressMessages(bind_rows(lapply(extra.x.files, readLdFunc)))
       extra.ldscore$CHR <- NULL
       extra.ldscore$BP <- NULL
       if(ncol(extra.ldscore)==2){colnames(extra.ldscore)[2] <- c(ld2[i])}
       extra.m.files <- sort(Sys.glob(paste0(ld2[i],"*M_5_50")))
-      extra.m <- suppressMessages(ldply(.data=extra.m.files,.fun=readMFunc))
+      extra.m <- suppressMessages(bind_rows(lapply(extra.m.files, readMFunc)))
       if(identical(as.character(x$SNP),as.character(extra.ldscore$SNP))==T){
         colnames.x <- colnames(x)
         colnames.extra.ldscore <- colnames(extra.ldscore)[2:ncol(extra.ldscore)]
@@ -141,7 +141,7 @@ s_ldsc <- function(traits,sample.prev=NULL,population.prev=NULL,ld,wld,frq,trait
   
   
   w.files <- sort(Sys.glob(paste0(wld,"*l2.ldscor*")))
-  w <- suppressMessages(ldply(w.files,readLdFunc))
+  w <- suppressMessages(bind_rows(lapply(w.files, readLdFunc)))
   w$CM <- NULL
   w$MAF <- NULL
   colnames(w)[ncol(w)] <- "wLD"

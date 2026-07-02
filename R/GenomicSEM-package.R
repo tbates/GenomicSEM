@@ -4,13 +4,13 @@
 ## usethis namespace: start
 #' @importFrom lavaan lavaan sem standardizedSolution parTable lavInspect 
 #' @importFrom lavaan lav_model_get_parameters lav_matrix_vech
-#' @importFrom lavaan lav_func_jacobian_complex simulateData
+#' @importFrom lavaan lav_func_jacobian_complex simulateData nobs
 
 #' @importFrom foreach %dopar% foreach %:% 
 #' @importFrom iterators icount
 #' @importFrom data.table := %like% fread setnames transpose
 #' @importFrom dplyr %>% filter mutate select summarise across all_of 
-#' @importFrom dplyr anti_join inner_join count where
+#' @importFrom dplyr anti_join inner_join count where bind_rows
 #' @importFrom gdata lowerTriangle upperTriangle
 #' @importFrom ggpubr ggarrange ggexport
 #' @importFrom ggplot2 aes ggplot geom_abline geom_hline geom_line geom_point
@@ -27,7 +27,6 @@
 #' @importFrom MASS mvrnorm
 #' @importFrom doParallel registerDoParallel
 #' @importFrom parallel makeCluster stopCluster detectCores mclapply
-#' @importFrom plyr ldply
 #' @importFrom readr read_delim read_csv
 #' @importFrom R.utils gzip
 #' @importFrom rlang .data
@@ -38,8 +37,6 @@
 #' @importFrom utils setTxtProgressBar lsf.str tail
 #' @importFrom stats cor cov cov2cor dnorm pnorm qnorm pchisq qchisq
 #' @importFrom stats lm median na.omit optim resid fitted setNames
-
-# replace plyr::ldply with dply function or purrr
 
 ## usethis namespace: end
 
@@ -75,7 +72,9 @@ utils::globalVariables(c(
 	"inspect",
 	"fixed",
 	"type",
-	"slope"
+	"slope",
+	"lowerTriangle",
+	"upperTriangle"
 ))
 NULL
 
